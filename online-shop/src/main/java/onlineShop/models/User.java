@@ -1,7 +1,14 @@
 package onlineShop.models;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -43,16 +50,24 @@ public class User extends BaseEntity {
 
     @NonNull
     @NotNull
-    @Size(min = 2, max = 30)
+    @Size(min = 2, max = 20)
     @Column(name = "username")
     private String username;
 
     @NonNull
     @NotNull
-    @Size(min = 6)
+    @Size(min = 6, max = 15)
     @Column(name = "password")
     private String password;
 
     @Column(name = "active")
     private boolean active;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = {
+                    @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_users_roles_user")) },
+            inverseJoinColumns = {
+                    @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_users_roles_role")) })
+    private Set<Role> roles;
 }
