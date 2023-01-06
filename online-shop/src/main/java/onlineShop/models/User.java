@@ -1,5 +1,6 @@
 package onlineShop.models;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -56,8 +57,7 @@ public class User extends BaseEntity {
 
     @NonNull
     @NotNull
-    @Size(min = 6, max = 15)
-    @Column(name = "password")
+    @Column(name = "password", columnDefinition = "TEXT")
     private String password;
 
     @Column(name = "active")
@@ -69,5 +69,5 @@ public class User extends BaseEntity {
                     @JoinColumn(name = "user_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_users_roles_user")) },
             inverseJoinColumns = {
                     @JoinColumn(name = "role_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_users_roles_role")) })
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 }
